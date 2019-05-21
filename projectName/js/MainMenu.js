@@ -17,7 +17,6 @@ MainMenu.prototype = {
     console.log('Mainmenu: preload');
 
     game.load.image('ground', 'assets/img/platform.png');
-    game.load.image('background', 'assets/img/B1.png');
     game.load.image('spike', 'assets/img/spikes_24.png');
     game.load.image('heart', 'assets/img/heart_full.png');
     game.load.image('heartHalf', 'assets/img/heart_half.png');
