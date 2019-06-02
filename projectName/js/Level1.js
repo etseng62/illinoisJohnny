@@ -47,14 +47,13 @@ Level1.prototype = {
     oof = game.add.audio('oof');
 
     //Background
-    //test = game.add.sprite(0,0, 'test');
     back = game.add.sprite(0, 0, 'background');
     level = game.add.sprite(0,0, 'B1');
     this.map = game.add.tilemap('level');
     this.map.addTilesetImage('textures', 'tilesheet');
     this.map.setCollisionByExclusion([]);
-    this.mapLayer = this.map.createLayer('Tile Layer 1');
-    this.mapLayer.resizeWorld();
+    mapLayer = this.map.createLayer('Tile Layer 1');
+    mapLayer.resizeWorld();
 
     //Spikes
     spikes = game.add.group();
@@ -75,7 +74,7 @@ Level1.prototype = {
     player.anchor.set(0.5);
     player.scale.setTo(1.5, 1.5);
     game.physics.arcade.enable(player);
-    player.body.setSize(24, 32, 5, 0);
+    player.body.setSize(13, 32, 10, 0);
     player.body.bounce.y = 0;
     player.body.gravity.y = playerGravity;
     player.body.collideWorldBounds = true;
@@ -109,6 +108,27 @@ Level1.prototype = {
     game.add.existing(this.ghost4);
     this.ghost5 = new ghosts(game, 'ghost', '4', 240, 1000, g5Vel, 1.5);
     game.add.existing(this.ghost5);
+    
+    // Create Mummies
+    this.mummy1 = new mummies(game, 'mummy', '2', 48,264, 1.3);
+    game.add.existing(this.mummy1);
+    this.mummy2 = new mummies(game, 'mummy', '2', 360, 744, 1.3);
+    game.add.existing(this.mummy2);
+    this.mummy3 = new mummies(game, 'mummy', '2', 216, 744, 1.3);
+    game.add.existing(this.mummy3);
+    this.mummy4 = new mummies(game, 'mummy', '2', 552, 744, 1.3);
+    game.add.existing(this.mummy4);
+    this.mummy5 = new mummies(game, 'mummy', '2', 384, 506, 1.3);
+    game.add.existing(this.mummy5);
+
+    //Invisible walls
+    walls = game.add.group();
+    makeWalls(144,288);
+    makeWalls(96, 768);
+    makeWalls(168, 768);
+    makeWalls(408,768);
+    makeWalls(480, 768);
+    makeWalls(264, 528);
 
     //black
     //black = game.add.sprite(0, 0, 'black');
@@ -139,8 +159,7 @@ Level1.prototype = {
     //Hearts move ith camera
     hearts.y = game.camera.y + 16;
     //Player collisions
-    game.physics.arcade.collide(player, this.mapLayer);
-    game.physics.arcade.collide(this.mapLayer, spikes);
+    game.physics.arcade.collide(player, mapLayer);
 
     //Creates collision between player and platforms
     this.isGrounded = player.body.blocked.down;
@@ -287,6 +306,16 @@ function makeSpikes(xPos, yPos, n){
     spike.body.immovable = true;
     xPos += 24;
   }
+}
+
+//Creates invisible walls so mummies don't fall off
+function makeWalls(xPos, yPos){
+  var wall = walls.create(xPos, yPos, 'wall');
+  game.physics.arcade.enable(wall);
+  wall.enableBody = true;
+  wall.body.immovable = true;
+  wall.body.gravity = false;
+  wall.alpha = 0;
 }
 
 //Creates players attack hitbox
